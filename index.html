@@ -585,6 +585,7 @@
       <option value="adult">ADULT CUT 18+</option>
       <option value="teen">TEENAGER CUTS 13–17</option>
       <option value="kids">KIDS CUTS 3–12</option>
+      <option value="birthday">🎂 BIRTHDAY CUT (FREE)</option>
     </select>
 
     <!-- Adult: service picker -->
@@ -613,6 +614,22 @@
         <option value="NONE">— Select a service —</option>
         <option value="Kids Cut">✂ Kids Cut — $1,500+</option>
       </select>
+    </div>
+
+    <!-- Birthday: service picker -->
+    <div id="birthdayServiceWrap" style="display:none;">
+      <div style="background:linear-gradient(135deg,#e91e8c,#ff6b35); border-radius:8px; padding:12px 14px; margin-bottom:10px; text-align:center;">
+        <div style="font-family:'Bebas Neue',cursive; font-size:18px; letter-spacing:2px; color:#fff;">🎂 FREE BIRTHDAY CUT</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.9); margin-top:4px; font-weight:600;">Valid on your birthday · ID required at appointment</div>
+      </div>
+      <label for="birthdayService">Birthday Service:</label>
+      <select id="birthdayService" onchange="onServiceChange();">
+        <option value="NONE">— Select a service —</option>
+        <option value="Birthday Cut">🎂 Birthday Cut — FREE</option>
+      </select>
+      <div id="birthdayIdNotice" style="display:none; margin-bottom:10px; background:#1a1a1a; border-left:4px solid #e91e8c; border-radius:6px; padding:10px 14px; font-size:13px; color:#ccc; line-height:1.6;">
+        🪪 <strong style="color:#e91e8c;">ID Required:</strong> Please bring a valid government-issued ID (passport, driver's licence, national ID) showing your date of birth. No ID = no free cut.
+      </div>
     </div>
 
     <!-- Hidden field that carries the real service value for booking logic -->
@@ -666,6 +683,23 @@
   </div>
 
   <div style="max-width:420px; margin:0 auto; padding:0 16px 80px;">
+
+    <!-- ========== FREE BIRTHDAY CUT ========== -->
+    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:2px solid #e91e8c; box-shadow:0 2px 12px rgba(233,30,140,0.18);">
+      <div style="background:linear-gradient(135deg,#e91e8c,#ff6b35); padding:10px 16px; display:flex; align-items:center; justify-content:space-between;">
+        <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#fff;">🎂 FREE BIRTHDAY CUT</span>
+        <span style="font-family:'Bebas Neue',cursive; font-size:13px; color:rgba(255,255,255,0.9); letter-spacing:1px;">FOR EVERYONE</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div style="background:rgba(233,30,140,0.07); border:1px solid rgba(233,30,140,0.3); border-radius:6px; padding:10px 12px; margin-bottom:10px; font-size:13px; color:#111; line-height:1.7;">
+          🪪 <strong style="color:#e91e8c;">Valid ID Required</strong> — Bring a government-issued ID (passport, driver's licence, national ID) showing your date of birth.<br>
+          <strong style="color:#e53935;">No ID = No free cut.</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.07);"><span style="font-size:14px; color:#1a1a1a;">Any Cut of Choice</span><span style="font-size:14px; color:#4caf50; font-weight:700; white-space:nowrap; margin-left:12px;">FREE 🎉</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.07);"><span style="font-size:14px; color:#555; font-style:italic;">Kids, Teens &amp; Adults</span><span style="font-size:14px; color:#888; font-weight:700; white-space:nowrap; margin-left:12px;">All Ages Welcome</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 0;"><span style="font-size:14px; color:#555;">Valid on Your Birthday Only</span><span style="font-size:14px; color:#888; font-weight:700; white-space:nowrap; margin-left:12px;">1 Day Only</span></div>
+      </div>
+    </div>
 
     <!-- ========== REGULAR — ADULTS 18+ ========== -->
     <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(21,101,192,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
@@ -999,7 +1033,8 @@ const firebaseConfig = {
     "Adult Premium Cut": 30,
     "Adult Regular Cut": 30,
     "Teen Regular Cut": 30,
-    "Kids Cut": 30
+    "Kids Cut": 30,
+    "Birthday Cut": 30
   };
 
   function getSelectedServices() {
@@ -1289,6 +1324,22 @@ const firebaseConfig = {
           {name:'Custom Design',price:'$200+',isAddon:true},
         ]}
       ])
+    },
+
+    "Birthday Cut": {
+      label: "🎂 Birthday Cut — FREE (ID Required)",
+      basePrice: 0,
+      html: () => `<div style="background:linear-gradient(135deg,#e91e8c,#ff6b35);padding:10px 14px;">
+        <span style="font-family:'Bebas Neue',cursive;letter-spacing:2px;font-size:14px;color:#fff;">🎂 BIRTHDAY CUT &nbsp;|&nbsp; FREE &nbsp;|&nbsp; 30 mins</span>
+      </div>
+      <div style="padding:8px 12px 10px;">
+        <div style="background:rgba(233,30,140,0.1);border:1px solid rgba(233,30,140,0.4);border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#f0f0f0;line-height:1.6;">
+          🪪 <strong style="color:#e91e8c;">ID Required at Appointment</strong><br>
+          Bring a valid government-issued ID (passport, driver's licence, national ID) showing your date of birth. <strong>No ID = no free cut.</strong>
+        </div>
+        <div class="tap-hint">👆 Tap a cut below to select</div>
+        ${['All Round Fade','Taper Fade','One Level','Bald Cut','Mohawk','Flat Top','Big Chop','Buzz Cut','Low Fade','Skin Fade','Ladies Cut','School Boy Trim'].map(c=>buildCutRow(c,'FREE',false)).join('')}
+      </div>`
     }
   };
 
@@ -1300,9 +1351,11 @@ const firebaseConfig = {
     document.getElementById('adultServiceWrap').style.display = 'none';
     document.getElementById('teenServiceWrap').style.display = 'none';
     document.getElementById('kidsServiceWrap').style.display = 'none';
+    document.getElementById('birthdayServiceWrap').style.display = 'none';
     document.getElementById('adultService').value = 'NONE';
     document.getElementById('teenService').value = 'NONE';
     document.getElementById('kidsService').value = 'NONE';
+    document.getElementById('birthdayService').value = 'NONE';
 
     const card = document.getElementById('serviceIncludesCard');
     const hidden = document.getElementById('haircutType');
@@ -1323,6 +1376,12 @@ const firebaseConfig = {
       hidden.value = 'NONE';
       card.style.display = 'none';
       card.innerHTML = '';
+    } else if (group === 'birthday') {
+      document.getElementById('birthdayServiceWrap').style.display = 'block';
+      document.getElementById('birthdayIdNotice').style.display = 'none';
+      hidden.value = 'NONE';
+      card.style.display = 'none';
+      card.innerHTML = '';
     } else {
       hidden.value = 'NONE';
       card.style.display = 'none';
@@ -1338,12 +1397,17 @@ const firebaseConfig = {
     if (group === 'adult') svc = document.getElementById('adultService').value;
     else if (group === 'teen') svc = document.getElementById('teenService').value;
     else if (group === 'kids') svc = document.getElementById('kidsService').value;
+    else if (group === 'birthday') svc = document.getElementById('birthdayService').value;
 
     const hidden = document.getElementById('haircutType');
     const card = document.getElementById('serviceIncludesCard');
     clearSelections();
 
     hidden.value = (svc === 'NONE') ? 'NONE' : svc;
+
+    // Show/hide birthday ID notice
+    const idNotice = document.getElementById('birthdayIdNotice');
+    if (idNotice) idNotice.style.display = (group === 'birthday' && svc !== 'NONE') ? 'block' : 'none';
 
     if (svc && svc !== 'NONE' && pricingCardDefs[svc]) {
       card.innerHTML = pricingCardDefs[svc].html();
