@@ -917,20 +917,22 @@
       const confirmInput = document.getElementById('clearInput').value.trim();
       if (confirmInput !== 'CONFIRM') { alert('TYPE "CONFIRM" TO CLEAR PAST RESERVATIONS.'); return; }
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 
       db.collection('bookings').get().then(snapshot => {
         const batch = db.batch();
+        let count = 0;
         snapshot.forEach(doc => {
           const booking = doc.data();
-          if (booking.date && typeof booking.date === "string") {
-            const [year, month, day] = booking.date.split('-').map(Number);
-            const bookingDate = new Date(year, month - 1, day);
-            bookingDate.setHours(0, 0, 0, 0);
-            if (bookingDate < today) batch.delete(doc.ref);
+          if (booking.date && typeof booking.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(booking.date)) {
+            if (booking.date < todayStr) {
+              batch.delete(doc.ref);
+              count++;
+            }
           }
         });
+        if (count === 0) { showToast('ℹ️ No past reservations to clear.'); return Promise.resolve(); }
         return batch.commit();
       }).then(() => {
         showToast('✅ Past reservations cleared.');
