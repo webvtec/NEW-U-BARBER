@@ -583,8 +583,8 @@
     <select id="ageGroup" onchange="onAgeGroupChange();">
       <option value="NONE">NONE</option>
       <option value="adult">ADULT CUT 18+</option>
-      <option value="teen">TEENAGER CUTS 13–17</option>
-      <option value="kids">KIDS CUTS 3–12</option>
+      <option value="teen">BIG KIDS CUTS 7–17</option>
+      <option value="kids">KIDS CUTS 3–6</option>
       <option value="birthday">🎂 BIRTHDAY CUT (FREE)</option>
     </select>
 
@@ -600,7 +600,7 @@
 
     <!-- Teen: service picker -->
     <div id="teenServiceWrap" style="display:none;">
-      <label for="teenService">Teen Service:</label>
+      <label for="teenService">Big Kids Service:</label>
       <select id="teenService" onchange="onServiceChange();">
         <option value="NONE">— Select a service —</option>
         <option value="Teen Regular Cut">✂ Regular Cut — $2,000</option>
@@ -748,10 +748,10 @@
       </div>
     </div>
 
-    <!-- ========== REGULAR — TEENS 13–17 ========== -->
+    <!-- ========== REGULAR — BIG KIDS 7–17 ========== -->
     <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(21,101,192,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
       <div style="background:var(--accent); padding:10px 16px;">
-        <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#1a1a1a;">✂ REGULAR — TEENS 13–17</span>
+        <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#1a1a1a;">✂ REGULAR — BIG KIDS 7–17</span>
       </div>
       <div style="padding:12px 16px;">
         <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.07);"><span style="font-size:14px; color:#1a1a1a;">All Round Fade</span><span style="font-size:14px; color:var(--accent); font-weight:700; white-space:nowrap; margin-left:12px;">$2,000</span></div>
@@ -769,10 +769,10 @@
       </div>
     </div>
 
-    <!-- ========== KIDS 3–12 ========== -->
+    <!-- ========== KIDS 3–6 ========== -->
     <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(21,101,192,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
       <div style="background:var(--accent); padding:10px 16px;">
-        <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#1a1a1a;">👦 KIDS 3–12</span>
+        <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#1a1a1a;">👦 KIDS 3–6</span>
       </div>
       <div style="padding:12px 16px;">
         <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.07);"><span style="font-size:14px; color:#1a1a1a;">All Round Fade</span><span style="font-size:14px; color:var(--accent); font-weight:700; white-space:nowrap; margin-left:12px;">$1,500+</span></div>
@@ -1282,9 +1282,9 @@ const firebaseConfig = {
     },
 
     "Teen Regular Cut": {
-      label: "Teen 13–17 — Regular Cut ($2,000)",
+      label: "Big Kids 7–17 — Regular Cut ($2,000)",
       basePrice: 2000,
-      html: () => buildPricingCard('✂ TEEN 13–17 — REGULAR CUT &nbsp;|&nbsp; $2,000 &nbsp;|&nbsp; 30 mins', [
+      html: () => buildPricingCard('✂ BIG KIDS 7–17 — REGULAR CUT &nbsp;|&nbsp; $2,000 &nbsp;|&nbsp; 30 mins', [
         { title: 'Cut of Choice (pick one):', items: [
           {name:'All Round Fade',price:''},
           {name:'Taper Fade',price:''},
@@ -1305,9 +1305,9 @@ const firebaseConfig = {
     },
 
     "Kids Cut": {
-      label: "Kids 3–12 — Cut ($1,500+)",
+      label: "Kids 3–6 — Cut ($1,500+)",
       basePrice: 1500,
-      html: () => buildPricingCard('✂ KIDS 3–12 — CUT &nbsp;|&nbsp; $1,500+ &nbsp;|&nbsp; 30 mins', [
+      html: () => buildPricingCard('✂ KIDS 3–6 — CUT &nbsp;|&nbsp; $1,500+ &nbsp;|&nbsp; 30 mins', [
         { title: 'Cut of Choice (pick one):', items: [
           {name:'All Round Fade',price:'$1,500+'},
           {name:'Taper Fade',price:'$1,500+'},
