@@ -1683,7 +1683,7 @@ const firebaseConfig = {
         fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id: telegramChatId, text: message, parse_mode: "HTML" })
+          body: JSON.stringify({ chat_id: telegramChatId, text: message })
         }).catch(() => {}); // Telegram failure should never block confirmation
 
         document.querySelector("#bookingSection form").reset();
