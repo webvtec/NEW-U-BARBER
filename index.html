@@ -1684,7 +1684,18 @@ const firebaseConfig = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ chat_id: telegramChatId, text: message })
-        }).catch(() => {}); // Telegram failure should never block confirmation
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.ok) {
+            console.error("Telegram error:", data.description);
+            alert("Telegram error: " + data.description); // remove after debugging
+          }
+        })
+        .catch(err => {
+          console.error("Telegram fetch failed:", err);
+          alert("Telegram fetch failed: " + err.message); // remove after debugging
+        });
 
         document.querySelector("#bookingSection form").reset();
         clearSelections();
