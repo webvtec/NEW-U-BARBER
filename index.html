@@ -471,6 +471,8 @@
   <a onclick="showSection('reviewsSection'); closeMenu();">⭐ REVIEWS</a>
   <a onclick="showSection('walkInPriceSection'); closeMenu();">💰 Appointment Price List</a>
 
+  <a onclick="showSection('houseCallSection'); closeMenu();" style="display:block; text-align:center; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; padding:10px 12px; border-radius:6px; font-weight:700; letter-spacing:0.5px; margin-bottom:14px; box-shadow:0 2px 8px rgba(21,101,192,0.35);">🏠 HOUSE CALL</a>
+
   <div class="opening-hours">
     <h3>APPOINTMENTS &amp; WALK-INS:</h3>
     <p>Tue – Sun: 6:30 AM – 7:00 PM</p>
@@ -791,6 +793,98 @@
     </div>
 
   </div>
+</div>
+
+<!-- House Call Section -->
+<div class="content-section" id="houseCallSection">
+  <h1>🏠 HOUSE CALL</h1>
+  <div style="max-width:420px; margin:0 auto 16px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:12px 16px; font-size:13px; color:#ccc; line-height:1.6;">
+    🏠 <strong style="color:var(--accent);">Barber Comes To You.</strong> Fill in your details below and pick your cut — <strong style="color:var(--accent);">same prices as in-shop.</strong><br>
+    📞 <strong style="color:var(--accent);">No date needed.</strong> The barber will <strong>call you to arrange a time</strong> as soon as they see your request.
+  </div>
+  <form onsubmit="submitHouseCall(event)">
+    <label for="hcName">Name:</label>
+    <input id="hcName" required type="text" placeholder="Your full name"/>
+
+    <label for="hcPhone">Phone Number:</label>
+    <input id="hcPhone" type="tel" inputmode="numeric" maxlength="14" placeholder="eg... (876) 123-4567" required/>
+
+    <label for="hcLocation">Home Location / Address:</label>
+    <textarea id="hcLocation" required placeholder="Street address, community, town/parish, and any landmark or directions" style="width:100%; min-height:80px; padding:12px; margin-bottom:10px; border:1px solid #444; border-radius:6px; box-sizing:border-box; font-family:'Barlow',sans-serif; font-size:14px; background-color:#2b2b2b; color:#f0f0f0; resize:vertical;"></textarea>
+
+    <button type="button" onclick="hcGetLocation()" style="width:100%; padding:11px; margin-bottom:8px; background:#2b2b2b; color:var(--accent); border:1px solid var(--accent); border-radius:6px; cursor:pointer; font-family:'Barlow',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.5px;">📍 USE MY CURRENT LOCATION (OPTIONAL)</button>
+    <input type="hidden" id="hcGeo" value=""/>
+    <p id="hcGeoMsg" style="display:none; margin:0 0 14px; font-size:12px; color:#4caf50; text-align:center;"></p>
+
+    <!-- Haircut Age Group -->
+    <label for="hcAgeGroup">Haircut:</label>
+    <select id="hcAgeGroup" onchange="hcOnAgeGroupChange();">
+      <option value="NONE">NONE</option>
+      <option value="adult">ADULT CUT 18+</option>
+      <option value="teen">BIG KIDS CUTS 7–17</option>
+      <option value="kids">KIDS CUTS 3–6</option>
+      <option value="birthday">🎂 BIRTHDAY CUT (FREE)</option>
+    </select>
+
+    <!-- Adult: service picker -->
+    <div id="hcAdultServiceWrap" style="display:none;">
+      <label for="hcAdultService">Adult Service:</label>
+      <select id="hcAdultService" onchange="hcOnServiceChange();">
+        <option value="NONE">— Select a service —</option>
+        <option value="Adult Premium Cut">⭐ Premium Cut — $3,000</option>
+        <option value="Adult Regular Cut">✂ Regular Cut — $2,500</option>
+      </select>
+    </div>
+
+    <!-- Teen: service picker -->
+    <div id="hcTeenServiceWrap" style="display:none;">
+      <label for="hcTeenService">Big Kids Service:</label>
+      <select id="hcTeenService" onchange="hcOnServiceChange();">
+        <option value="NONE">— Select a service —</option>
+        <option value="Teen Regular Cut">✂ Regular Cut — $2,000</option>
+      </select>
+    </div>
+
+    <!-- Kids: service picker -->
+    <div id="hcKidsServiceWrap" style="display:none;">
+      <label for="hcKidsService">Kids Service:</label>
+      <select id="hcKidsService" onchange="hcOnServiceChange();">
+        <option value="NONE">— Select a service —</option>
+        <option value="Kids Cut">✂ Kids Cut — $1,500+</option>
+      </select>
+    </div>
+
+    <!-- Birthday: service picker -->
+    <div id="hcBirthdayServiceWrap" style="display:none;">
+      <div style="background:linear-gradient(135deg,#e91e8c,#ff6b35); border-radius:8px; padding:12px 14px; margin-bottom:10px; text-align:center;">
+        <div style="font-family:'Bebas Neue',cursive; font-size:18px; letter-spacing:2px; color:#fff;">🎂 FREE BIRTHDAY CUT</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.9); margin-top:4px; font-weight:600;">Valid on your birthday · ID required at appointment</div>
+      </div>
+      <label for="hcBirthdayService">Birthday Service:</label>
+      <select id="hcBirthdayService" onchange="hcOnServiceChange();">
+        <option value="NONE">— Select a service —</option>
+        <option value="Birthday Cut">🎂 Birthday Cut — FREE</option>
+      </select>
+      <div id="hcBirthdayIdNotice" style="display:none; margin-bottom:10px; background:#1a1a1a; border-left:4px solid #e91e8c; border-radius:6px; padding:10px 14px; font-size:13px; color:#ccc; line-height:1.6;">
+        🪪 <strong style="color:#e91e8c;">ID Required:</strong> Please bring a valid government-issued ID (passport, driver's licence, national ID) showing your date of birth. No ID = no free cut.
+      </div>
+    </div>
+
+    <!-- Hidden field that carries the real service value -->
+    <input type="hidden" id="hcHaircutType" value="NONE"/>
+
+    <!-- Service / Pricing Card -->
+    <div id="hcServiceIncludesCard" style="display:none; margin-bottom:8px; border-radius:8px; overflow:hidden; border:1px solid var(--accent); background:#1e1e1e;"></div>
+
+    <!-- Selected items summary -->
+    <div id="hcSelectionSummary" style="display:none; margin-bottom:14px; padding:10px 12px; background:#111; border:1px solid var(--accent); border-radius:6px;">
+      <div style="font-family:'Bebas Neue',cursive;letter-spacing:1.5px;font-size:13px;color:var(--accent);margin-bottom:5px;">✔ YOUR SELECTION:</div>
+      <div id="hcSelectionSummaryText"></div>
+    </div>
+
+    <button type="submit">REQUEST HOUSE CALL 🏠</button>
+  </form>
+  <p id="houseCallMessage"></p>
 </div>
 
 <!-- Admin Login Modal -->
@@ -1193,10 +1287,19 @@ const firebaseConfig = {
     document.head.appendChild(s);
   })();
 
-  function buildCutRow(name, price, isAddon) {
+  // Render context: 'hc' while building the House Call card, null otherwise.
+  // Lets the shared pricing cards reuse the exact same cuts/prices while wiring
+  // taps to the correct (booking vs house-call) selection handlers.
+  let __cardCtx = null;
+
+  function buildCutRow(name, price, isAddon, ctx) {
+    const useCtx = ctx || __cardCtx;
     const cls = isAddon ? 'addon-item' : 'cut-item';
     const dotColor = isAddon ? '#e0c060' : 'var(--accent)';
-    const fn = isAddon ? `toggleAddon(this,'${name.replace(/'/g,"\\'")}')` : `toggleCut(this,'${name.replace(/'/g,"\\'")}')`;
+    const esc = name.replace(/'/g,"\\'");
+    let fn;
+    if (useCtx === 'hc') fn = isAddon ? `hcToggleAddon(this,'${esc}')` : `hcToggleCut(this,'${esc}')`;
+    else fn = isAddon ? `toggleAddon(this,'${esc}')` : `toggleCut(this,'${esc}')`;
     const priceStr = price && price !== '$' ? `<span class="item-price">${price}</span>` : '';
     return `<div class="${cls}" onclick="${fn}">
       <span class="item-label"><span class="item-dot" style="background:${dotColor};"></span>${name}${priceStr}</span>
@@ -1214,7 +1317,7 @@ const firebaseConfig = {
     });
   });
 
-  function buildPricingCard(headerHTML, sections) {
+  function buildPricingCard(headerHTML, sections, ctx) {
     // sections = [{title, items:[{name,price,isAddon}], isMutex}]
     let html = `<div style="background:var(--accent);padding:10px 14px;">
       <span style="font-family:'Bebas Neue',cursive;letter-spacing:2px;font-size:14px;color:#1a1a1a;">${headerHTML}</span>
@@ -1223,7 +1326,7 @@ const firebaseConfig = {
       <div class="tap-hint">👆 Tap items below to select what you want</div>`;
     sections.forEach(sec => {
       if (sec.title) html += `<div class="card-section-title">${sec.title}</div>`;
-      sec.items.forEach(it => { html += buildCutRow(it.name, it.price, it.isAddon); });
+      sec.items.forEach(it => { html += buildCutRow(it.name, it.price, it.isAddon, ctx); });
     });
     html += `</div>`;
     return html;
@@ -1738,6 +1841,277 @@ const firebaseConfig = {
     document.getElementById('bookingModal').style.display = 'none';
   }
 
+  // ========================================================================
+  // ===================  HOUSE CALL  =======================================
+  // Reuses the SAME pricing cards/prices as booking, but keeps its own
+  // selection state and does NOT touch the booking calendar (no date/slot
+  // blocking). On submit it sends a Telegram message to the barber, who then
+  // calls the client to arrange a time.
+  // ========================================================================
+  let hcSelectedCutItem = null;
+  let hcSelectedCutPrice = null;
+  let hcSelectedAddons = new Set();
+
+  function hcOnAgeGroupChange() {
+    const group = document.getElementById('hcAgeGroup').value;
+    document.getElementById('hcAdultServiceWrap').style.display = 'none';
+    document.getElementById('hcTeenServiceWrap').style.display = 'none';
+    document.getElementById('hcKidsServiceWrap').style.display = 'none';
+    document.getElementById('hcBirthdayServiceWrap').style.display = 'none';
+    document.getElementById('hcAdultService').value = 'NONE';
+    document.getElementById('hcTeenService').value = 'NONE';
+    document.getElementById('hcKidsService').value = 'NONE';
+    document.getElementById('hcBirthdayService').value = 'NONE';
+
+    const card = document.getElementById('hcServiceIncludesCard');
+    document.getElementById('hcHaircutType').value = 'NONE';
+    hcClearSelections();
+    card.style.display = 'none';
+    card.innerHTML = '';
+
+    if (group === 'adult') document.getElementById('hcAdultServiceWrap').style.display = 'block';
+    else if (group === 'teen') document.getElementById('hcTeenServiceWrap').style.display = 'block';
+    else if (group === 'kids') document.getElementById('hcKidsServiceWrap').style.display = 'block';
+    else if (group === 'birthday') {
+      document.getElementById('hcBirthdayServiceWrap').style.display = 'block';
+      document.getElementById('hcBirthdayIdNotice').style.display = 'none';
+    }
+  }
+
+  function hcOnServiceChange() {
+    const group = document.getElementById('hcAgeGroup').value;
+    let svc = 'NONE';
+    if (group === 'adult') svc = document.getElementById('hcAdultService').value;
+    else if (group === 'teen') svc = document.getElementById('hcTeenService').value;
+    else if (group === 'kids') svc = document.getElementById('hcKidsService').value;
+    else if (group === 'birthday') svc = document.getElementById('hcBirthdayService').value;
+
+    const card = document.getElementById('hcServiceIncludesCard');
+    hcClearSelections();
+    document.getElementById('hcHaircutType').value = (svc === 'NONE') ? 'NONE' : svc;
+
+    const idNotice = document.getElementById('hcBirthdayIdNotice');
+    if (idNotice) idNotice.style.display = (group === 'birthday' && svc !== 'NONE') ? 'block' : 'none';
+
+    if (svc && svc !== 'NONE' && pricingCardDefs[svc]) {
+      __cardCtx = 'hc';                       // render rows wired to hc handlers
+      card.innerHTML = pricingCardDefs[svc].html();
+      __cardCtx = null;
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+      card.innerHTML = '';
+    }
+  }
+
+  function hcToggleCut(el, name) {
+    document.querySelectorAll('#hcServiceIncludesCard .cut-item.selected').forEach(e => e.classList.remove('selected'));
+    if (hcSelectedCutItem === name) {
+      hcSelectedCutItem = null;
+      hcSelectedCutPrice = null;
+    } else {
+      hcSelectedCutItem = name;
+      el.classList.add('selected');
+      const haircut = document.getElementById('hcHaircutType')?.value || 'NONE';
+      const overrides = cutPriceOverrides[haircut];
+      hcSelectedCutPrice = (overrides && overrides[name] !== undefined) ? overrides[name] : null;
+    }
+    hcRefreshChecks();
+    hcUpdateSelectionSummary();
+  }
+
+  function hcToggleAddon(el, name) {
+    if (hcSelectedAddons.has(name)) {
+      hcSelectedAddons.delete(name);
+      el.classList.remove('selected');
+    } else {
+      hcSelectedAddons.add(name);
+      el.classList.add('selected');
+    }
+    hcRefreshChecks();
+    hcUpdateSelectionSummary();
+  }
+
+  function hcRefreshChecks() {
+    document.querySelectorAll('#hcServiceIncludesCard .cut-item, #hcServiceIncludesCard .addon-item').forEach(row => {
+      const ic = row.querySelector('.item-check');
+      if (ic) ic.textContent = row.classList.contains('selected') ? '✔' : '☐';
+    });
+  }
+
+  function hcUpdateSelectionSummary() {
+    const box = document.getElementById('hcSelectionSummary');
+    const text = document.getElementById('hcSelectionSummaryText');
+    if (!box || !text) return;
+    const parts = [];
+    if (hcSelectedCutItem) parts.push('✂ ' + hcSelectedCutItem);
+    hcSelectedAddons.forEach(a => parts.push('+ ' + a));
+    if (parts.length === 0) {
+      box.style.display = 'none';
+      text.innerHTML = '';
+    } else {
+      box.style.display = 'block';
+      const total = hcGetSelectedTotal();
+      const totalStr = total > 0 ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(21,101,192,0.3);font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:15px;color:var(--accent);">💰 ESTIMATED TOTAL: $${total.toLocaleString()}</div>` : '';
+      text.innerHTML = parts.map(p => `<span style="display:inline-block;background:#2a2a2a;border:1px solid var(--accent);border-radius:4px;padding:3px 8px;margin:3px 3px 3px 0;font-size:12px;color:var(--accent);font-weight:700;">${p}</span>`).join('') + totalStr;
+    }
+  }
+
+  function hcClearSelections() {
+    hcSelectedCutItem = null;
+    hcSelectedCutPrice = null;
+    hcSelectedAddons.clear();
+    document.querySelectorAll('#hcServiceIncludesCard .cut-item.selected, #hcServiceIncludesCard .addon-item.selected').forEach(e => e.classList.remove('selected'));
+    hcUpdateSelectionSummary();
+  }
+
+  function hcGetSelectedServices() {
+    const haircut = document.getElementById('hcHaircutType')?.value || 'NONE';
+    if (!haircut || haircut === 'NONE') return 'No services selected';
+    const def = pricingCardDefs[haircut];
+    const packageLabel = def ? def.label : haircut;
+    const parts = [packageLabel];
+    if (hcSelectedCutItem) parts.push('Cut: ' + hcSelectedCutItem);
+    hcSelectedAddons.forEach(a => parts.push('Add-on: ' + a));
+    return parts.join(' | ');
+  }
+
+  function hcGetSelectedTotal() {
+    const haircut = document.getElementById('hcHaircutType')?.value || 'NONE';
+    if (!haircut || haircut === 'NONE') return 0;
+    const def = pricingCardDefs[haircut];
+    let total = hcSelectedCutPrice !== null ? hcSelectedCutPrice : (def?.basePrice || 0);
+    const freeList = premiumFreeAddons[haircut] || [];
+    hcSelectedAddons.forEach(a => {
+      if (freeList.includes(a)) return;
+      if (addonPrices[a]) total += addonPrices[a];
+    });
+    return total;
+  }
+
+  function hcGetLocation() {
+    const msg = document.getElementById('hcGeoMsg');
+    if (!navigator.geolocation) {
+      msg.style.display = 'block';
+      msg.style.color = '#e74c3c';
+      msg.textContent = '⚠ Location not supported on this device — please type your address above.';
+      return;
+    }
+    msg.style.display = 'block';
+    msg.style.color = '#ccc';
+    msg.textContent = '📍 Getting your location…';
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude.toFixed(6);
+        const lng = pos.coords.longitude.toFixed(6);
+        const link = `https://maps.google.com/?q=${lat},${lng}`;
+        document.getElementById('hcGeo').value = link;
+        msg.style.color = '#4caf50';
+        msg.innerHTML = '✔ Location pin captured — it will be shared with the barber.';
+      },
+      (err) => {
+        document.getElementById('hcGeo').value = '';
+        msg.style.color = '#e74c3c';
+        msg.textContent = '⚠ Could not get location — please type your address above.';
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
+  function submitHouseCall(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('hcName').value.trim();
+    const phone = document.getElementById('hcPhone').value.trim();
+    const location = document.getElementById('hcLocation').value.trim();
+    const geoLink = document.getElementById('hcGeo').value.trim();
+    const services = hcGetSelectedServices();
+    const total = hcGetSelectedTotal();
+
+    if (!name || !phone || !location) {
+      alert('Please fill in your name, phone number and home location.');
+      return;
+    }
+    if (services === 'No services selected') {
+      alert('Please select a service before requesting a house call.');
+      return;
+    }
+    if (!hcSelectedCutItem) {
+      alert('Please select your Cut of Choice before requesting a house call.');
+      return;
+    }
+
+    const totalStr = total > 0 ? `\n💰 Total: $${total.toLocaleString()}` : '';
+    const geoStr = geoLink ? `\n🗺 Map: ${geoLink}` : '';
+    const message = `🏠 NEW HOUSE CALL REQUEST\n\n👤 Name: ${name}\n📞 Phone: ${phone}\n📍 Location: ${location}${geoStr}\n💈 Service: ${services}${totalStr}\n\n📲 Call the client to arrange a time.`;
+
+    const telegramBotToken = "8702371174:AAH0S_dbWCylhZnCq99HF_r5lwCg-GBJrgQ";
+    const telegramChatId = "-1003921031839";
+
+    // Best-effort record for the barber (separate collection — never blocks any
+    // booking dates/slots). A failure here must NOT stop the request.
+    try {
+      const user = firebase.auth().currentUser;
+      db.collection('houseCalls').add({
+        type: 'houseCall',
+        uid: user ? user.uid : null,
+        name, phone, location,
+        mapLink: geoLink || null,
+        service: services,
+        total,
+        status: 'New',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(() => {});
+    } catch (e) { /* ignore */ }
+
+    // The Telegram alert is the core deliverable — always send it.
+    fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: telegramChatId, text: message })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.ok) {
+        console.error("Telegram error:", data.description);
+        Swal.fire({ icon: 'error', title: 'Could Not Send', text: 'Please try again or call the shop directly.', confirmButtonColor: '#1565C0' });
+        return;
+      }
+      hcShowSuccess(name);
+    })
+    .catch(err => {
+      console.error("Telegram fetch failed:", err);
+      Swal.fire({ icon: 'error', title: 'Network Error', text: 'Check your connection and try again.', confirmButtonColor: '#1565C0' });
+    });
+  }
+
+  function hcShowSuccess(name) {
+    // Reset the house-call form
+    document.querySelector("#houseCallSection form").reset();
+    hcClearSelections();
+    document.getElementById('hcAdultServiceWrap').style.display = 'none';
+    document.getElementById('hcTeenServiceWrap').style.display = 'none';
+    document.getElementById('hcKidsServiceWrap').style.display = 'none';
+    document.getElementById('hcBirthdayServiceWrap').style.display = 'none';
+    document.getElementById('hcServiceIncludesCard').style.display = 'none';
+    document.getElementById('hcServiceIncludesCard').innerHTML = '';
+    document.getElementById('hcHaircutType').value = 'NONE';
+    document.getElementById('hcGeo').value = '';
+    document.getElementById('hcGeoMsg').style.display = 'none';
+
+    Swal.fire({
+      title: "<div style='font-family:Bebas Neue,cursive;letter-spacing:2px;font-size:24px;color:#1565C0;'>HOUSE CALL REQUESTED 🏠</div>",
+      html: `<div style="font-family:Barlow,sans-serif; color:#f0f0f0; font-size:15px; line-height:1.6;">
+        Thanks${name ? ', ' + name : ''}! Your house call request has been sent.<br><br>
+        <b style="color:#1565C0;">📲 The barber will call you to arrange a time</b> as soon as they see it.
+      </div>`,
+      icon: 'success',
+      background: "#1a1a1a",
+      confirmButtonText: "GOT IT",
+      confirmButtonColor: "#1565C0"
+    });
+  }
+
   // ========== PAYMENT INFO ==========    
    function showPaymentInfo() {
     Swal.fire({
@@ -2043,9 +2417,9 @@ const firebaseConfig = {
 
   // ========== PHONE FORMAT ==========
   document.addEventListener("DOMContentLoaded", function () {
-    const phoneInput = document.getElementById("phone");
-    if (phoneInput) {
-      phoneInput.addEventListener("input", function(e) {
+    function attachPhoneFormat(el) {
+      if (!el) return;
+      el.addEventListener("input", function(e) {
         let input = e.target.value.replace(/\D/g, "");
         if (input.length > 10) input = input.substring(0, 10);
         let formatted = input;
@@ -2055,6 +2429,8 @@ const firebaseConfig = {
         e.target.value = formatted;
       });
     }
+    attachPhoneFormat(document.getElementById("phone"));
+    attachPhoneFormat(document.getElementById("hcPhone"));
 
     const dateInput = document.getElementById("date");
     if (dateInput) {
