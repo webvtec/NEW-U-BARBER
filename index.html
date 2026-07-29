@@ -475,7 +475,8 @@
 
   <div class="opening-hours">
     <h3>APPOINTMENTS &amp; WALK-INS:</h3>
-    <p>Tue – Sun: 6:30 AM – 7:00 PM</p>
+    <p>Tue – Sat: 6:30 AM – 7:00 PM</p>
+    <p>Sun: 6:30 AM – 4:00 PM</p>
     <p style="color:#e74c3c; font-weight:bold;">Monday: CLOSED</p>
   </div>
 
@@ -561,7 +562,7 @@
   <div style="max-width:420px; margin:0 auto 16px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:12px 16px; font-size:13px; color:#ccc; line-height:1.6;">
     📅 <strong style="color:var(--accent);">Appointments:</strong> Tuesday – Sunday<br>
     🚶 <strong style="color:var(--accent);">Walk-ins:</strong> Tuesday – Sunday<br>
-    🕡 <strong style="color:var(--accent);">Hours:</strong> 6:30 AM – 7:00 PM<br>
+    🕡 <strong style="color:var(--accent);">Hours:</strong> Tue–Sat: 6:30 AM – 7:00 PM | Sun: 6:30 AM – 4:00 PM<br>
     ⛔ <strong style="color:#e74c3c;">Closed:</strong> Monday
   </div>
   <form onsubmit="submitBooking(event)">
@@ -680,7 +681,7 @@
 <div class="content-section" id="walkInPriceSection">
   <h1 style="font-family:'Bebas Neue',cursive; letter-spacing:2px; color:var(--accent); text-align:center; margin-top:80px; font-size:30px;">Appointment Price List</h1>
   <div style="max-width:420px; margin:0 auto 24px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:10px 16px; font-size:13px; color:#ccc; line-height:1.6;">
-    📆 <strong style="color:var(--accent);">Appointments:</strong> Tue – Sun &nbsp;|&nbsp; 6:30 AM – 7:00 PM &nbsp;|&nbsp; Closed Mondays
+    📆 <strong style="color:var(--accent);">Appointments:</strong> Tue – Sat: 6:30 AM – 7:00 PM &nbsp;|&nbsp; Sun: 6:30 AM – 4:00 PM &nbsp;|&nbsp; Closed Mondays
   </div>
 
   <div style="max-width:420px; margin:0 auto; padding:0 16px 80px;">
@@ -798,7 +799,8 @@
 <div class="content-section" id="houseCallSection">
   <h1>🏠 HOUSE CALL</h1>
   <div style="max-width:420px; margin:0 auto 16px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:12px 16px; font-size:13px; color:#ccc; line-height:1.6;">
-    🏠 <strong style="color:var(--accent);">Barber Comes To You.</strong> Fill in your details below and pick your cut — <strong style="color:var(--accent);">same prices as in-shop.</strong><br>
+    🏠 <strong style="color:var(--accent);">Barber Comes To You.</strong> Fill in your details below and pick your cut.<br>
+    💰 <strong style="color:var(--accent);">Home Visits start at $7,000</strong> and go up depending on your destination / location.<br>
     📞 <strong style="color:var(--accent);">No date needed.</strong> The barber will <strong>call you to arrange a time</strong> as soon as they see your request.
   </div>
   <form onsubmit="submitHouseCall(event)">
@@ -1111,7 +1113,7 @@ const firebaseConfig = {
     'Thursday':  { open: '6:30 AM', close: '7:00 PM' },
     'Friday':    { open: '6:30 AM', close: '7:00 PM' },
     'Saturday':  { open: '6:30 AM', close: '7:00 PM' },
-    'Sunday':    { open: '6:30 AM', close: '7:00 PM' }
+    'Sunday':    { open: '6:30 AM', close: '4:00 PM' }
   };
 
   // Walk-in-only days (no online booking). Empty = online booking available every open day.
