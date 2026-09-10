@@ -97,14 +97,29 @@
     content: "";
     position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: -2;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 60% 40% at 15% 12%, rgba(47,140,255,0.10), transparent 65%),
-      radial-gradient(ellipse 55% 40% at 88% 25%, rgba(79,184,255,0.09), transparent 65%),
-      radial-gradient(ellipse 55% 45% at 20% 85%, rgba(47,140,255,0.08), transparent 65%),
+      radial-gradient(ellipse 60% 40% at 15% 12%, rgba(47,140,255,0.14), transparent 65%),
+      radial-gradient(ellipse 55% 40% at 88% 25%, rgba(79,184,255,0.12), transparent 65%),
+      radial-gradient(ellipse 55% 45% at 20% 85%, rgba(47,140,255,0.10), transparent 65%),
+      radial-gradient(ellipse 60% 45% at 85% 90%, rgba(20,80,176,0.10), transparent 65%),
       var(--bg);
   }
+
+  /* honeycomb texture overlay — matches the barbershop reference aesthetic */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg width='56' height='97' viewBox='0 0 56 97' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%232f8cff' stroke-opacity='0.10' stroke-width='1'%3E%3Cpath d='M28 0 L56 16.17 L56 48.5 L28 64.67 L0 48.5 L0 16.17 Z'/%3E%3Cpath d='M28 64.67 L56 80.83 L56 97 M28 64.67 L0 80.83 L0 97'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 56px 97px;
+  }
+
+  .header-bar, .desktop-nav, .hero, .content-section, footer { position: relative; z-index: 1; }
 
   ::selection { background: var(--accent); color: #0a0a0a; }
 
@@ -135,13 +150,15 @@
       font-family: 'Barlow', sans-serif;
       font-size: 13px;
       font-weight: 600;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
       transition: color 0.2s ease;
       white-space: nowrap;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
     }
-    .desktop-nav a:hover { color: var(--accent); }
+    .desktop-nav a:hover { color: var(--accent-glow); border-bottom-color: rgba(79,184,255,0.5); }
     .desktop-nav .nav-book-btn {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       color: #fff !important;
@@ -155,25 +172,32 @@
     .content-section { scroll-margin-top: 110px; }
   }
 
-  /* ===== Hero ===== */
+  /* ===== Hero — left-aligned, bottom-anchored, matching reference layout ===== */
   .hero {
     position: relative;
     min-height: 100svh;
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    align-items: flex-start;
+    justify-content: flex-end;
+    text-align: left;
     overflow: hidden;
-    padding: 90px 20px 60px;
-    background-image:
-      linear-gradient(180deg, rgba(6,6,6,0.55) 0%, rgba(6,6,6,0.55) 40%, rgba(6,6,6,0.92) 100%),
-      url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1920&auto=format&fit=crop');
+    padding: 90px 8% 12vh;
+    padding-left: max(8%, 24px);
+    background-image: url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1920&auto=format&fit=crop');
     background-size: cover;
     background-position: center 30%;
     background-attachment: scroll;
   }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(4,7,12,0.72);
+    pointer-events: none;
+  }
+  .hero > * { position: relative; z-index: 2; }
 
   @media (min-width: 900px) {
     .hero { background-attachment: fixed; }
@@ -221,49 +245,54 @@
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     opacity: 0;
     animation: heroFadeUp 0.9s ease forwards 0.75s;
   }
 
   .hero-btn-primary {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #0a0a0a;
-    font-family: 'Bebas Neue', cursive;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
     letter-spacing: 2px;
-    font-size: 16px;
-    padding: 14px 30px;
-    border-radius: 999px;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 17px 34px;
+    border-radius: 2px;
     border: none;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
-    box-shadow: 0 8px 24px rgba(47,140,255,0.35);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(47,140,255,0.3);
+    transition: all 0.25s ease;
   }
-  .hero-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(47,140,255,0.5); }
+  .hero-btn-primary:hover { background: var(--accent-glow); box-shadow: 0 0 28px rgba(79,184,255,0.5); }
 
   .hero-btn-secondary {
-    background: transparent;
-    color: #fff;
-    font-family: 'Bebas Neue', cursive;
+    background: #fff;
+    color: var(--accent2);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
     letter-spacing: 2px;
-    font-size: 16px;
-    padding: 13px 28px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 17px 34px;
+    border-radius: 2px;
+    border: 1px solid #fff;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.25s ease;
   }
-  .hero-btn-secondary:hover { border-color: var(--accent); background: rgba(255,255,255,0.06); }
+  .hero-btn-secondary:hover { background: #f0f0f0; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
 
   .hero-scroll-cue {
     position: absolute;
     bottom: 26px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 8%;
     color: rgba(255,255,255,0.75);
     font-size: 11px;
     letter-spacing: 3px;
@@ -272,6 +301,7 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    z-index: 2;
   }
   .hero-scroll-cue::after {
     content: '';
@@ -313,16 +343,18 @@
     text-align: center;
     font-family: 'Cinzel', serif;
     font-weight: 600;
+    text-transform: uppercase;
     color: #fff;
     font-size: clamp(26px, 5vw, 38px);
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     margin: 0 0 8px;
   }
 
   .section-divider {
-    width: 54px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    width: 64px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+    border-radius: 2px;
     margin: 18px auto 34px;
   }
 
@@ -341,15 +373,15 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 58px;
-    background-color: rgba(10,10,10,0.86);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    height: 64px;
+    background-color: rgba(4,7,12,0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    border-bottom: 1px solid rgba(47,140,255,0.35);
+    border-bottom: 1px solid rgba(47,140,255,0.25);
     transition: background-color 0.3s ease;
   }
 
@@ -361,6 +393,49 @@
     color: var(--accent);
     text-align: center;
     white-space: nowrap;
+  }
+
+  /* ===== Brand lockup — logo mark + stacked wordmark, mirrors reference nav ===== */
+  .brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .brand-lockup img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(47,140,255,0.65);
+    box-shadow: 0 0 14px rgba(47,140,255,0.45);
+    display: block;
+    flex-shrink: 0;
+  }
+  .brand-lockup .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    text-align: left;
+  }
+  .brand-lockup .brand-main {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: clamp(13px, 2vw, 18px);
+    letter-spacing: 3px;
+    color: #fff;
+  }
+  .brand-lockup .brand-sub {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: clamp(8px, 1.2vw, 11px);
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+  @media (min-width: 900px) {
+    .brand-lockup img { height: 48px; width: 48px; }
   }
 
   .menu-button {
@@ -422,10 +497,11 @@
     text-align: center;
     font-family: 'Cinzel', serif;
     font-weight: 600;
+    text-transform: uppercase;
     color: #fff;
     margin-top: 0;
     font-size: clamp(26px, 5vw, 36px);
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
   }
 
   form {
@@ -705,6 +781,85 @@
   }
 
   .menu-action-btn:hover { background-color: var(--accent); color: var(--primary); }
+
+  /* ===== Footer — grid layout with logo, links, social, matching reference site ===== */
+  footer.site-footer {
+    background: #050810;
+    border-top: 1px solid rgba(47,140,255,0.2);
+    padding: 60px 8% 30px;
+    margin-top: 10px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto 40px;
+  }
+  .footer-col h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    color: #fff;
+  }
+  .footer-col p, .footer-col a {
+    color: #8a9bb8;
+    font-size: 13px;
+    text-decoration: none;
+    line-height: 2;
+  }
+  .footer-col a:hover { color: var(--accent-glow); }
+  .footer-col ul { list-style: none; padding: 0; margin: 0; }
+  .footer-col ul li a { display: block; padding: 2px 0; cursor: pointer; }
+  .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .footer-logo img {
+    height: 42px;
+    width: 42px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(47,140,255,0.5);
+  }
+  .footer-logo span {
+    font-family: 'Cinzel', serif;
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+  .social-links { display: flex; gap: 14px; margin-top: 10px; }
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(47,140,255,0.08);
+    border: 1px solid rgba(47,140,255,0.25);
+    color: var(--text);
+    font-size: 17px;
+    transition: 0.3s;
+  }
+  .social-links a:hover {
+    transform: translateY(-3px);
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 18px rgba(47,140,255,0.5);
+  }
+  .footer-bottom {
+    text-align: center;
+    border-top: 1px solid rgba(47,140,255,0.15);
+    padding-top: 24px;
+    color: #667;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  @media (max-width: 700px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+    .footer-logo { justify-content: center; }
+    .social-links { justify-content: center; }
+  }
 </style>
 </head>
 <body>
@@ -712,7 +867,10 @@
 <!-- Header -->
 <div class="header-bar">
   <button class="menu-button" onclick="toggleMenu()">☰</button>
-  <div class="header-title">NEW U BARBER</div>
+  <a class="brand-lockup" onclick="showSection('home')">
+    <img src="https://res.cloudinary.com/dqqr9udcs/image/upload/v1776877093/Apr_22_2026_11_52_41_AM.png_wqhnjl.jpg" alt="New U Barber logo"/>
+    <span class="brand-text"><span class="brand-main">NEW U</span><span class="brand-sub">BARBER</span></span>
+  </a>
   <a class="location-button" href="https://maps.app.goo.gl/jxwXq6aN847d5AvWA" target="_blank">📍</a>
 </div>
 
@@ -1188,10 +1346,37 @@
 </div>
 
 <!-- Footer -->
-<footer style="text-align:center; padding:40px 20px 90px; color:#8a8578; font-size:12px; letter-spacing:0.5px; border-top:1px solid rgba(47,140,255,0.2); margin-top:10px;">
-  <div style="font-family:'Cinzel',serif; color:var(--accent); font-size:16px; letter-spacing:2px; margin-bottom:8px;">NEW U BARBER</div>
-  <div>Shop 7, Independence City Plaza, 5 Madrid Ave, Portmore</div>
-  <div style="margin-top:4px;">© <span id="footerYear"></span> New U Barber. All rights reserved.</div>
+<footer class="site-footer" style="padding-bottom:90px;">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">
+        <img src="https://res.cloudinary.com/dqqr9udcs/image/upload/v1776877093/Apr_22_2026_11_52_41_AM.png_wqhnjl.jpg" alt="New U Barber logo"/>
+        <span>NEW U BARBER</span>
+      </div>
+      <p>Precision fades, skin fades, beard work, kids cuts and special designs — book your chair online in under a minute.</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/reel/DEYCgK4hTlQ/?igsh=MWowNDMyc28wZWRleg==" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
+        <a href="https://maps.app.goo.gl/jxwXq6aN847d5AvWA" target="_blank" rel="noopener" aria-label="Find us on the map">📍</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a onclick="showSection('home')">Home</a></li>
+        <li><a onclick="showSection('gallerySection'); openGallery();">Cuts</a></li>
+        <li><a onclick="showSection('bookingSection')">Book Now</a></li>
+        <li><a onclick="showSection('reviewsSection')">Reviews</a></li>
+        <li><a onclick="showSection('walkInPriceSection')">Prices</a></li>
+        <li><a onclick="showSection('houseCallSection')">House Call</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit Us</h4>
+      <p>Shop 7, Independence City Plaza<br>5 Madrid Ave, Portmore, Jamaica</p>
+      <p>Tue – Sat: 6:30 AM – 7:00 PM<br>Sun: 6:30 AM – 4:00 PM<br>Closed Mondays</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© <span id="footerYear"></span> New U Barber. All rights reserved.</div>
 </footer>
 
 <!-- Admin Login Modal -->
