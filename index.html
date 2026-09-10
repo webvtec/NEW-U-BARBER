@@ -131,7 +131,7 @@
     .desktop-nav {
       display: flex;
       position: fixed;
-      top: 58px;
+      top: 64px;
       left: 0;
       right: 0;
       z-index: 998;
@@ -148,10 +148,9 @@
       color: var(--text);
       text-decoration: none;
       font-family: 'Barlow', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
       cursor: pointer;
       transition: color 0.2s ease;
       white-space: nowrap;
@@ -168,7 +167,7 @@
     }
     .desktop-nav .nav-book-btn:hover { color: #fff !important; opacity: 0.88; }
     /* push page content down to clear both bars on desktop */
-    .hero { padding-top: 148px; }
+    .hero { padding-top: 154px; }
     .content-section { scroll-margin-top: 110px; }
   }
 
@@ -328,26 +327,23 @@
     position: relative;
   }
 
-  .section-kicker {
+  .section-subtitle {
     text-align: center;
     font-family: 'Barlow', sans-serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 16px;
+    color: #9db4d9;
+    font-weight: 400;
+    margin: -18px 0 34px;
   }
 
   .section-heading {
     text-align: center;
     font-family: 'Cinzel', serif;
     font-weight: 600;
-    text-transform: uppercase;
     color: #fff;
-    font-size: clamp(26px, 5vw, 38px);
-    letter-spacing: 2px;
-    margin: 0 0 8px;
+    font-size: clamp(28px, 5.5vw, 50px);
+    letter-spacing: 1px;
+    margin: 0 0 0;
   }
 
   .section-divider {
@@ -355,7 +351,7 @@
     height: 3px;
     background: linear-gradient(90deg, var(--accent), var(--accent-glow));
     border-radius: 2px;
-    margin: 18px auto 34px;
+    margin: 20px auto 22px;
   }
 
   .fade-section {
@@ -462,7 +458,7 @@
 
   .menu {
     position: fixed;
-    top: 58px;
+    top: 64px;
     left: 0;
     width: 190px;
     background-color: #0f0f0f;
@@ -470,7 +466,7 @@
     padding: 24px 16px;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    height: calc(100vh - 58px);
+    height: calc(100vh - 64px);
     overflow-y: auto;
     box-sizing: border-box;
     z-index: 999;
@@ -497,11 +493,10 @@
     text-align: center;
     font-family: 'Cinzel', serif;
     font-weight: 600;
-    text-transform: uppercase;
     color: #fff;
     margin-top: 0;
-    font-size: clamp(26px, 5vw, 36px);
-    letter-spacing: 2px;
+    font-size: clamp(28px, 5.5vw, 50px);
+    letter-spacing: 1px;
   }
 
   form {
@@ -888,7 +883,7 @@
 <!-- Hero Section -->
 <div class="hero" id="home">
   <div class="hero-eyebrow">Portmore, Jamaica</div>
-  <h1 class="hero-title">PRECISION CUTS.<br><span>PREMIUM</span> EXPERIENCE.</h1>
+  <h1 class="hero-title">Precision Cuts.<br><span>Premium</span> Experience.</h1>
   <p class="hero-subtitle">Sharp fades, clean lineups and detailed beard work — book your chair online in under a minute.</p>
   <div class="hero-ctas">
     <a href="#bookingSection" onclick="showSection('bookingSection'); return false;" class="hero-btn-primary">BOOK A CUT NOW</a>
@@ -899,9 +894,9 @@
 
 <!-- Gallery Section -->
 <div class="content-section fade-section" id="gallerySection">
-  <div class="section-kicker">The Craft</div>
   <h2 class="section-heading">Fresh Cuts</h2>
   <div class="section-divider"></div>
+  <div class="section-subtitle">The Craft</div>
   <div id="galleryToggleWrap" style="text-align:center;">
     <p style="color:#9db4d9; font-size:14px; margin-bottom:20px;">Take a look at recent work from the chair.</p>
     <button id="galleryToggleBtn" onclick="toggleGallery()" class="hero-btn-primary" style="background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff;">VIEW THE GALLERY</button>
@@ -1004,9 +999,9 @@
 
 <!-- Booking Section -->
 <div class="content-section fade-section section-alt" id="bookingSection">
-  <div class="section-kicker">Reserve Your Chair</div>
-  <h1>BOOK YOUR CUT</h1>
+  <h1>Book Your Cut</h1>
   <div class="section-divider"></div>
+  <div class="section-subtitle">Reserve Your Chair</div>
   <div style="max-width:420px; margin:0 auto 16px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:12px 16px; font-size:13px; color:#ccc; line-height:1.6;">
     📅 <strong style="color:var(--accent);">Appointments:</strong> Tuesday – Sunday<br>
     🚶 <strong style="color:var(--accent);">Walk-ins:</strong> Tuesday – Sunday<br>
@@ -1107,9 +1102,9 @@
 
 <!-- Reviews Section -->
 <div class="content-section fade-section" id="reviewsSection">
-  <div class="section-kicker">In Their Words</div>
-  <h1>CLIENT REVIEWS</h1>
+  <h1>Client Reviews</h1>
   <div class="section-divider"></div>
+  <div class="section-subtitle">In Their Words</div>
   <div id="reviewPrompt" style="display:none; max-width:500px; margin:20px auto; background-color:#eaf3ff; color:#444; border:1px solid var(--accent); border-radius:6px; padding:15px; text-align:center; font-weight:500;">
     How was your cut? Leave us a review!
   </div>
@@ -1133,9 +1128,9 @@
 
 <!-- Appointment Price List Section -->
 <div class="content-section fade-section section-alt" id="walkInPriceSection">
-  <div class="section-kicker">Know Before You Go</div>
   <h1>Appointment Price List</h1>
   <div class="section-divider"></div>
+  <div class="section-subtitle">Know Before You Go</div>
   <div style="max-width:420px; margin:0 auto 24px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:10px 16px; font-size:13px; color:#ccc; line-height:1.6;">
     📆 <strong style="color:var(--accent);">Appointments:</strong> Tue – Sat: 6:30 AM – 7:00 PM &nbsp;|&nbsp; Sun: 6:30 AM – 4:00 PM &nbsp;|&nbsp; Closed Mondays
   </div>
@@ -1253,9 +1248,9 @@
 
 <!-- House Call Section -->
 <div class="content-section fade-section" id="houseCallSection">
-  <div class="section-kicker">We Come To You</div>
-  <h1>🏠 HOUSE CALL</h1>
+  <h1>🏠 House Call</h1>
   <div class="section-divider"></div>
+  <div class="section-subtitle">We Come To You</div>
   <div style="max-width:420px; margin:0 auto 16px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:12px 16px; font-size:13px; color:#ccc; line-height:1.6;">
     🏠 <strong style="color:var(--accent);">Barber Comes To You.</strong> Fill in your details below and pick your cut.<br>
     💰 <strong style="color:var(--accent);">Home Visits start at $7,000</strong> and go up depending on your destination / location.<br>
