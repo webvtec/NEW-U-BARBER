@@ -18,10 +18,10 @@
 
   <style>
     :root {
-      --primary: #1a1a1a;
-      --accent: #1565C0;
-      --accent2: #0D47A1;
-      --bg: #ffffff;
+      --primary: #0c0c0c;
+      --accent: #c9a44c;
+      --accent2: #8f7328;
+      --bg: #f4f1ea;
       --white: #ffffff;
     }
 
@@ -372,11 +372,11 @@
     display:flex;flex-direction:column;
     align-items:center;justify-content:center;
     gap:24px;">
-    <div style="font-family:'Bebas Neue',cursive;font-size:42px;letter-spacing:6px;color:#1565C0;">CHECKING ACCESS</div>
+    <div style="font-family:'Bebas Neue',cursive;font-size:42px;letter-spacing:6px;color:var(--accent);">CHECKING ACCESS</div>
     <div style="display:flex;gap:10px;">
-      <span style="width:12px;height:12px;border-radius:50%;background:#1565C0;animation:dotpulse 1.2s ease-in-out infinite;display:inline-block;"></span>
-      <span style="width:12px;height:12px;border-radius:50%;background:#1565C0;animation:dotpulse 1.2s ease-in-out 0.4s infinite;display:inline-block;"></span>
-      <span style="width:12px;height:12px;border-radius:50%;background:#1565C0;animation:dotpulse 1.2s ease-in-out 0.8s infinite;display:inline-block;"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:var(--accent);animation:dotpulse 1.2s ease-in-out infinite;display:inline-block;"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:var(--accent);animation:dotpulse 1.2s ease-in-out 0.4s infinite;display:inline-block;"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:var(--accent);animation:dotpulse 1.2s ease-in-out 0.8s infinite;display:inline-block;"></span>
     </div>
     <div id="accessStatus" style="font-family:'Barlow',sans-serif;font-size:14px;color:#888;letter-spacing:1px;">VERIFYING IDENTITY...</div>
   </div>
@@ -958,7 +958,7 @@
             : '';
 
           container.innerHTML += `
-            <div class="reservation-card" data-id="${id}" style="${isDone ? 'opacity:0.75; border-left:4px solid #9e9e9e;' : 'border-left:4px solid #1565C0;'}">
+            <div class="reservation-card" data-id="${id}" style="${isDone ? 'opacity:0.75; border-left:4px solid #9e9e9e;' : 'border-left:4px solid var(--accent);'}">
               <div class="reservation-header">
                 <h3>${hc.name || 'N/A'}</h3>
                 <span class="badge" style="background:${isDone ? '#9e9e9e' : '#28a745'};">${isDone ? 'DONE' : 'NEW'}</span>

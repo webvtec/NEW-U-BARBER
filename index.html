@@ -67,16 +67,21 @@
 <!-- Google Sign-In -->
 <meta name="google-signin-client_id" content="345703317013.apps.googleusercontent.com">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@500;600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
   :root {
-    --primary: #1a1a1a;
-    --accent: #1565C0;
-    --accent2: #0D47A1;
-    --bg: #ffffff;
+    --primary: #0c0c0c;
+    --accent: #c9a44c;
+    --accent2: #8f7328;
+    --bg: #0a0a0a;
     --white: #ffffff;
-    --text: #f0f0f0;
+    --text: #e7e2d8;
+    --card: #151515;
   }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
 
   body {
     font-family: 'Barlow', sans-serif;
@@ -86,23 +91,210 @@
     color: var(--text);
   }
 
+  ::selection { background: var(--accent); color: #0a0a0a; }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 90px 20px 60px;
+    background-image:
+      linear-gradient(180deg, rgba(6,6,6,0.55) 0%, rgba(6,6,6,0.55) 40%, rgba(6,6,6,0.92) 100%),
+      url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1920&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center 30%;
+    background-attachment: scroll;
+  }
+
+  @media (min-width: 900px) {
+    .hero { background-attachment: fixed; }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+    font-weight: 700;
+    opacity: 0;
+    animation: heroFadeUp 0.9s ease forwards 0.15s;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: #fff;
+    font-size: clamp(38px, 9vw, 78px);
+    letter-spacing: 2px;
+    line-height: 1.08;
+    margin: 0 0 18px;
+    text-shadow: 0 6px 30px rgba(0,0,0,0.6);
+    opacity: 0;
+    animation: heroFadeUp 0.9s ease forwards 0.35s;
+  }
+
+  .hero-title span { color: var(--accent); }
+
+  .hero-subtitle {
+    font-family: 'Barlow', sans-serif;
+    font-size: clamp(14px, 2.4vw, 18px);
+    color: rgba(255,255,255,0.85);
+    max-width: 520px;
+    line-height: 1.6;
+    margin: 0 0 34px;
+    opacity: 0;
+    animation: heroFadeUp 0.9s ease forwards 0.55s;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: heroFadeUp 0.9s ease forwards 0.75s;
+  }
+
+  .hero-btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0a0a0a;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 2px;
+    font-size: 16px;
+    padding: 14px 30px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 8px 24px rgba(201,164,76,0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hero-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,164,76,0.5); }
+
+  .hero-btn-secondary {
+    background: transparent;
+    color: #fff;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 2px;
+    font-size: 16px;
+    padding: 13px 28px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .hero-btn-secondary:hover { border-color: var(--accent); background: rgba(255,255,255,0.06); }
+
+  .hero-scroll-cue {
+    position: absolute;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.75);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-scroll-cue::after {
+    content: '';
+    width: 1px;
+    height: 34px;
+    background: linear-gradient(180deg, var(--accent), transparent);
+    animation: cueMove 1.8s ease-in-out infinite;
+  }
+
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cueMove {
+    0% { transform: scaleY(0.4); opacity: 0.3; }
+    50% { transform: scaleY(1); opacity: 1; }
+    100% { transform: scaleY(0.4); opacity: 0.3; }
+  }
+
+  /* ===== Section shell ===== */
+  .content-section {
+    scroll-margin-top: 64px;
+    padding: 70px 16px 20px;
+    position: relative;
+  }
+
+  .section-kicker {
+    text-align: center;
+    font-family: 'Barlow', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .section-heading {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    color: #fff;
+    font-size: clamp(26px, 5vw, 38px);
+    letter-spacing: 1px;
+    margin: 0 0 8px;
+  }
+
+  .section-divider {
+    width: 54px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 18px auto 34px;
+  }
+
+  .fade-section {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-section.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .header-bar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 52px;
-    background-color: var(--primary);
+    height: 58px;
+    background-color: rgba(10,10,10,0.86);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    border-bottom: 2px solid var(--accent);
+    border-bottom: 1px solid rgba(201,164,76,0.35);
+    transition: background-color 0.3s ease;
   }
 
   .header-title {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 26px;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: 21px;
     letter-spacing: 3px;
     color: var(--accent);
     text-align: center;
@@ -133,19 +325,19 @@
 
   .menu {
     position: fixed;
-    top: 52px;
+    top: 58px;
     left: 0;
-    width: 165px;
-    background-color: #111;
+    width: 190px;
+    background-color: #0f0f0f;
     color: var(--white);
-    padding: 20px 15px;
+    padding: 24px 16px;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    height: calc(100vh - 52px);
+    height: calc(100vh - 58px);
     overflow-y: auto;
     box-sizing: border-box;
     z-index: 999;
-    border-right: 2px solid var(--accent);
+    border-right: 1px solid rgba(201,164,76,0.35);
   }
 
   .menu.show { transform: translateX(0); }
@@ -166,11 +358,12 @@
 
   h1 {
     text-align: center;
-    font-family: 'Bebas Neue', cursive;
-    color: var(--accent);
-    margin-top: 80px;
-    font-size: 34px;
-    letter-spacing: 2px;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 0;
+    font-size: clamp(26px, 5vw, 36px);
+    letter-spacing: 1.5px;
   }
 
   form {
@@ -211,7 +404,7 @@
   form input:focus, form select:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(21,101,192,0.2);
+    box-shadow: 0 0 0 2px rgba(201,164,76,0.2);
   }
 
   form button {
@@ -283,8 +476,11 @@
 
   .gallery-grid img:hover { transform: scale(1.02); }
 
-  .content-section { display: none; }
-  .content-section.active { display: block; }
+  .content-section { display: block; }
+
+  .section-alt { background: var(--card); }
+
+  #gallerySection, #reviewsSection, #walkInPriceSection { }
 
   .menu a.admin-button {
     background-color: #333;
@@ -327,8 +523,8 @@
   .opening-hours {
     font-family: 'Barlow', sans-serif;
     padding: 8px 0;
-    border-top: 1px solid rgba(21,101,192,0.3);
-    border-bottom: 1px solid rgba(21,101,192,0.3);
+    border-top: 1px solid rgba(201,164,76,0.3);
+    border-bottom: 1px solid rgba(201,164,76,0.3);
   }
 
   .opening-hours h3 {
@@ -366,7 +562,7 @@
 
   .separator-line {
     height: 1px;
-    background-color: rgba(21,101,192,0.3);
+    background-color: rgba(201,164,76,0.3);
     margin: 8px 0;
   }
 
@@ -458,20 +654,35 @@
   <a class="location-button" href="https://maps.app.goo.gl/jxwXq6aN847d5AvWA" target="_blank">📍</a>
 </div>
 
+<!-- Hero Section -->
+<div class="hero" id="home">
+  <div class="hero-eyebrow">Portmore, Jamaica</div>
+  <h1 class="hero-title">PRECISION CUTS.<br><span>PREMIUM</span> EXPERIENCE.</h1>
+  <p class="hero-subtitle">Sharp fades, clean lineups and detailed beard work — book your chair online in under a minute.</p>
+  <div class="hero-ctas">
+    <a href="#bookingSection" onclick="showSection('bookingSection'); return false;" class="hero-btn-primary">BOOK A CUT NOW</a>
+    <a href="#gallerySection" onclick="showSection('gallerySection'); return false;" class="hero-btn-secondary">VIEW THE WORK</a>
+  </div>
+  <div class="hero-scroll-cue">SCROLL</div>
+</div>
+
 <!-- Gallery Section -->
-<div class="content-section active" id="gallerySection">
-  <h2 style="text-align:center; margin-top:65px; font-family:'Bebas Neue',cursive; letter-spacing:2px; color:var(--primary); font-size:0;"></h2>
+<div class="content-section fade-section" id="gallerySection">
+  <div class="section-kicker">The Craft</div>
+  <h2 class="section-heading">Fresh Cuts</h2>
+  <div class="section-divider"></div>
   <div id="galleryDisplay"></div>
 </div>
 
 <!-- Side Menu -->
 <div class="menu" id="menu">
+  <a onclick="showSection('home'); closeMenu();">🏛 HOME</a>
   <a onclick="showSection('gallerySection'); closeMenu();">✂ CUTS</a>
   <a onclick="showSection('bookingSection'); closeMenu();">📆 BOOKING</a>
   <a onclick="showSection('reviewsSection'); closeMenu();">⭐ REVIEWS</a>
   <a onclick="showSection('walkInPriceSection'); closeMenu();">💰 Appointment Price List</a>
 
-  <a onclick="showSection('houseCallSection'); closeMenu();" style="display:block; text-align:center; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; padding:10px 12px; border-radius:6px; font-weight:700; letter-spacing:0.5px; margin-bottom:14px; box-shadow:0 2px 8px rgba(21,101,192,0.35);">🏠 HOUSE CALL</a>
+  <a onclick="showSection('houseCallSection'); closeMenu();" style="display:block; text-align:center; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; padding:10px 12px; border-radius:6px; font-weight:700; letter-spacing:0.5px; margin-bottom:14px; box-shadow:0 2px 8px rgba(201,164,76,0.35);">🏠 HOUSE CALL</a>
 
   <div class="opening-hours">
     <h3>APPOINTMENTS &amp; WALK-INS:</h3>
@@ -557,8 +768,10 @@
 </div>
 
 <!-- Booking Section -->
-<div class="content-section" id="bookingSection">
+<div class="content-section fade-section section-alt" id="bookingSection">
+  <div class="section-kicker">Reserve Your Chair</div>
   <h1>BOOK YOUR CUT</h1>
+  <div class="section-divider"></div>
   <div style="max-width:420px; margin:0 auto 16px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:12px 16px; font-size:13px; color:#ccc; line-height:1.6;">
     📅 <strong style="color:var(--accent);">Appointments:</strong> Tuesday – Sunday<br>
     🚶 <strong style="color:var(--accent);">Walk-ins:</strong> Tuesday – Sunday<br>
@@ -654,8 +867,10 @@
 </div>
 
 <!-- Reviews Section -->
-<div class="content-section" id="reviewsSection">
-  <h1 style="font-family:'Bebas Neue',cursive; letter-spacing:2px; color:var(--primary);">CLIENT REVIEWS</h1>
+<div class="content-section fade-section" id="reviewsSection">
+  <div class="section-kicker">In Their Words</div>
+  <h1>CLIENT REVIEWS</h1>
+  <div class="section-divider"></div>
   <div id="reviewPrompt" style="display:none; max-width:500px; margin:20px auto; background-color:#f5f0e8; color:#444; border:1px solid var(--accent); border-radius:6px; padding:15px; text-align:center; font-weight:500;">
     How was your cut? Leave us a review!
   </div>
@@ -678,8 +893,10 @@
 </div>
 
 <!-- Appointment Price List Section -->
-<div class="content-section" id="walkInPriceSection">
-  <h1 style="font-family:'Bebas Neue',cursive; letter-spacing:2px; color:var(--accent); text-align:center; margin-top:80px; font-size:30px;">Appointment Price List</h1>
+<div class="content-section fade-section section-alt" id="walkInPriceSection">
+  <div class="section-kicker">Know Before You Go</div>
+  <h1>Appointment Price List</h1>
+  <div class="section-divider"></div>
   <div style="max-width:420px; margin:0 auto 24px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:10px 16px; font-size:13px; color:#ccc; line-height:1.6;">
     📆 <strong style="color:var(--accent);">Appointments:</strong> Tue – Sat: 6:30 AM – 7:00 PM &nbsp;|&nbsp; Sun: 6:30 AM – 4:00 PM &nbsp;|&nbsp; Closed Mondays
   </div>
@@ -704,7 +921,7 @@
     </div>
 
     <!-- ========== REGULAR — ADULTS 18+ ========== -->
-    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(21,101,192,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
+    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(201,164,76,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
       <div style="background:var(--accent); padding:10px 16px;">
         <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#1a1a1a;">✂ REGULAR — ADULTS 18+</span>
       </div>
@@ -726,7 +943,7 @@
     </div>
 
     <!-- ========== PREMIUM — ADULTS 18+ ========== -->
-    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(21,101,192,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
+    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(201,164,76,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
       <div style="background:var(--accent); padding:10px 16px;">
         <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#1a1a1a;">⭐ PREMIUM — ADULTS 18+</span>
       </div>
@@ -751,7 +968,7 @@
     </div>
 
     <!-- ========== REGULAR — BIG KIDS 7–17 ========== -->
-    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(21,101,192,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
+    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(201,164,76,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
       <div style="background:var(--accent); padding:10px 16px;">
         <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#1a1a1a;">✂ REGULAR — BIG KIDS 7–17</span>
       </div>
@@ -772,7 +989,7 @@
     </div>
 
     <!-- ========== KIDS 3–6 ========== -->
-    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(21,101,192,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
+    <div style="background:#fafafa; border-radius:10px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(201,164,76,0.35); box-shadow:0 2px 6px rgba(0,0,0,0.06);">
       <div style="background:var(--accent); padding:10px 16px;">
         <span style="font-family:'Bebas Neue',cursive; letter-spacing:2px; font-size:15px; color:#1a1a1a;">👦 KIDS 3–6</span>
       </div>
@@ -796,8 +1013,10 @@
 </div>
 
 <!-- House Call Section -->
-<div class="content-section" id="houseCallSection">
+<div class="content-section fade-section" id="houseCallSection">
+  <div class="section-kicker">We Come To You</div>
   <h1>🏠 HOUSE CALL</h1>
+  <div class="section-divider"></div>
   <div style="max-width:420px; margin:0 auto 16px; background:#1a1a1a; border-left:4px solid var(--accent); border-radius:6px; padding:12px 16px; font-size:13px; color:#ccc; line-height:1.6;">
     🏠 <strong style="color:var(--accent);">Barber Comes To You.</strong> Fill in your details below and pick your cut.<br>
     💰 <strong style="color:var(--accent);">Home Visits start at $7,000</strong> and go up depending on your destination / location.<br>
@@ -883,6 +1102,28 @@
   </form>
   <p id="houseCallMessage"></p>
 </div>
+
+<!-- Newsletter / Email Signup Section -->
+<div class="content-section fade-section section-alt" id="newsletterSection">
+  <div class="section-kicker">Stay Sharp</div>
+  <h1>Get Booking Reminders &amp; Offers</h1>
+  <div class="section-divider"></div>
+  <form id="newsletterForm" onsubmit="subscribeNewsletter(event)" style="max-width:420px;">
+    <label for="newsletterName">Name:</label>
+    <input id="newsletterName" required type="text" placeholder="Your full name"/>
+    <label for="newsletterEmail">Email:</label>
+    <input id="newsletterEmail" required type="email" placeholder="you@example.com"/>
+    <button type="submit">JOIN THE LIST</button>
+  </form>
+  <p id="newsletterMsg" style="text-align:center; font-weight:bold; min-height:18px;"></p>
+</div>
+
+<!-- Footer -->
+<footer style="text-align:center; padding:40px 20px 90px; color:#8a8578; font-size:12px; letter-spacing:0.5px; border-top:1px solid rgba(201,164,76,0.2); margin-top:10px;">
+  <div style="font-family:'Cinzel',serif; color:var(--accent); font-size:16px; letter-spacing:2px; margin-bottom:8px;">NEW U BARBER</div>
+  <div>Shop 7, Independence City Plaza, 5 Madrid Ave, Portmore</div>
+  <div style="margin-top:4px;">© <span id="footerYear"></span> New U Barber. All rights reserved.</div>
+</footer>
 
 <!-- Admin Login Modal -->
 <div id="adminLoginModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background-color:rgba(0,0,0,0.65); justify-content:center; align-items:center; z-index:10000;">
@@ -1040,11 +1281,12 @@ const firebaseConfig = {
   }
 
   function showSection(sectionId) {
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
+    // The site is now a single scrolling page — every section is already
+    // visible, so "showing" a section just means smooth-scrolling to it.
+    const target = document.getElementById(sectionId);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    if (sectionId === 'gallerySection') loadGallery('galleryDisplay');
-    else if (sectionId === 'reviewsSection') loadReviews(currentUser);
+    if (sectionId === 'reviewsSection') loadReviews(currentUser);
   }
 
   // ========== GALLERY ==========
@@ -1101,8 +1343,24 @@ const firebaseConfig = {
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    showSection('gallerySection');
+    // One-page layout: every section is visible, so load everything up front
+    // instead of waiting for a nav click.
     loadGallery('galleryDisplay');
+    loadReviews(currentUser);
+
+    const yearEl = document.getElementById('footerYear');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Gentle reveal-on-scroll for each section
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-section').forEach(el => revealObserver.observe(el));
   });
 
   // Appointment days: Tue–Sun | Closed: Monday
@@ -1230,7 +1488,7 @@ const firebaseConfig = {
     } else {
       summaryBox.style.display = 'block';
       const total = getSelectedTotal();
-      const totalStr = total > 0 ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(21,101,192,0.3);font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:15px;color:var(--accent);">💰 ESTIMATED TOTAL: $${total.toLocaleString()}</div>` : '';
+      const totalStr = total > 0 ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(201,164,76,0.3);font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:15px;color:var(--accent);">💰 ESTIMATED TOTAL: $${total.toLocaleString()}</div>` : '';
       summaryText.innerHTML = parts.map(p => `<span style="display:inline-block;background:#2a2a2a;border:1px solid var(--accent);border-radius:4px;padding:3px 8px;margin:3px 3px 3px 0;font-size:12px;color:var(--accent);font-weight:700;">${p}</span>`).join('') + totalStr;
     }
   }
@@ -1259,7 +1517,7 @@ const firebaseConfig = {
     s.textContent = `
       .cut-item, .addon-item {
         padding: 8px 10px;
-        border-bottom: 1px solid rgba(21,101,192,0.12);
+        border-bottom: 1px solid rgba(201,164,76,0.12);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -1269,9 +1527,9 @@ const firebaseConfig = {
         user-select: none;
         -webkit-tap-highlight-color: transparent;
       }
-      .cut-item:hover, .addon-item:hover { background: rgba(21,101,192,0.08); }
-      .cut-item.selected { background: rgba(21,101,192,0.18); border-left: 3px solid var(--accent); }
-      .addon-item.selected { background: rgba(21,101,192,0.14); border-left: 3px solid #e0c060; }
+      .cut-item:hover, .addon-item:hover { background: rgba(201,164,76,0.08); }
+      .cut-item.selected { background: rgba(201,164,76,0.18); border-left: 3px solid var(--accent); }
+      .addon-item.selected { background: rgba(201,164,76,0.14); border-left: 3px solid #e0c060; }
       .item-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; display:inline-block; }
       .item-label { display:flex; align-items:center; gap:8px; font-size:13px; color:#ddd; font-family:'Barlow',sans-serif; }
       .item-price { font-size:12px; color:var(--accent); font-weight:700; white-space:nowrap; margin-left:8px; }
@@ -1754,6 +2012,7 @@ const firebaseConfig = {
 
         return db.collection('bookings').add({
           uid: user.uid,
+          userEmail: user.email || null,
           bookingNumber,
           name,
           phone,
@@ -1768,6 +2027,9 @@ const firebaseConfig = {
       })
       .then((docRef) => {
         if (!docRef) return;
+
+        // Remember this client's name & phone so their next booking is pre-filled.
+        saveCustomerInfo(user, name, phone);
 
         const [year, month, day] = date.split("-");
         const formattedDate = new Date(year, month - 1, day).toLocaleDateString("en-US", {
@@ -1949,7 +2211,7 @@ const firebaseConfig = {
     } else {
       box.style.display = 'block';
       const total = hcGetSelectedTotal();
-      const totalStr = total > 0 ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(21,101,192,0.3);font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:15px;color:var(--accent);">💰 ESTIMATED TOTAL: $${total.toLocaleString()}</div>` : '';
+      const totalStr = total > 0 ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(201,164,76,0.3);font-family:'Bebas Neue',cursive;letter-spacing:1px;font-size:15px;color:var(--accent);">💰 ESTIMATED TOTAL: $${total.toLocaleString()}</div>` : '';
       text.innerHTML = parts.map(p => `<span style="display:inline-block;background:#2a2a2a;border:1px solid var(--accent);border-radius:4px;padding:3px 8px;margin:3px 3px 3px 0;font-size:12px;color:var(--accent);font-weight:700;">${p}</span>`).join('') + totalStr;
     }
   }
@@ -2021,12 +2283,14 @@ const firebaseConfig = {
       db.collection('houseCalls').add({
         type: 'houseCall',
         uid: user ? user.uid : null,
+        userEmail: user ? (user.email || null) : null,
         name, phone, location,
         service: services,
         total,
         status: 'New',
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       }).catch(() => {});
+      if (user) saveCustomerInfo(user, name, phone);
     } catch (e) { /* ignore */ }
 
     // The Telegram alert is the core deliverable — always send it.
@@ -2039,14 +2303,14 @@ const firebaseConfig = {
     .then(data => {
       if (!data.ok) {
         console.error("Telegram error:", data.description);
-        Swal.fire({ icon: 'error', title: 'Could Not Send', text: 'Please try again or call the shop directly.', confirmButtonColor: '#1565C0' });
+        Swal.fire({ icon: 'error', title: 'Could Not Send', text: 'Please try again or call the shop directly.', confirmButtonColor: 'var(--accent)' });
         return;
       }
       hcShowSuccess(name);
     })
     .catch(err => {
       console.error("Telegram fetch failed:", err);
-      Swal.fire({ icon: 'error', title: 'Network Error', text: 'Check your connection and try again.', confirmButtonColor: '#1565C0' });
+      Swal.fire({ icon: 'error', title: 'Network Error', text: 'Check your connection and try again.', confirmButtonColor: 'var(--accent)' });
     });
   }
 
@@ -2063,15 +2327,15 @@ const firebaseConfig = {
     document.getElementById('hcHaircutType').value = 'NONE';
 
     Swal.fire({
-      title: "<div style='font-family:Bebas Neue,cursive;letter-spacing:2px;font-size:24px;color:#1565C0;'>HOUSE CALL REQUESTED 🏠</div>",
+      title: "<div style='font-family:Bebas Neue,cursive;letter-spacing:2px;font-size:24px;color:var(--accent);'>HOUSE CALL REQUESTED 🏠</div>",
       html: `<div style="font-family:Barlow,sans-serif; color:#f0f0f0; font-size:15px; line-height:1.6;">
         Thanks${name ? ', ' + name : ''}! Your house call request has been sent.<br><br>
-        <b style="color:#1565C0;">📲 The barber will call you to arrange a time</b> as soon as they see it.
+        <b style="color:var(--accent);">📲 The barber will call you to arrange a time</b> as soon as they see it.
       </div>`,
       icon: 'success',
       background: "#1a1a1a",
       confirmButtonText: "GOT IT",
-      confirmButtonColor: "#1565C0"
+      confirmButtonColor: "var(--accent)"
     });
   }
 
@@ -2092,7 +2356,7 @@ const firebaseConfig = {
       confirmButtonText: "CLOSE",
       background: "#1a1a1a",
       color: "white",
-      confirmButtonColor: "#1565C0",
+      confirmButtonColor: "var(--accent)",
       customClass: { popup: "swal2-rounded" }
     });
   }
@@ -2333,7 +2597,7 @@ const firebaseConfig = {
               title: 'Booking Cancelled',
               text: 'Booking #' + bookingNumber + ' has been cancelled.',
               icon: 'success',
-              confirmButtonColor: '#1565C0'
+              confirmButtonColor: 'var(--accent)'
             });
           })
           .catch(err => Swal.fire('Error', 'Failed to cancel booking: ' + err.message, 'error'));
@@ -2366,7 +2630,7 @@ const firebaseConfig = {
     }
     let html = '';
     for (let t = OPEN; t < CLOSE; t += INTERVAL) {
-      html += `<span style="background:#2b2b2b; border:1px solid rgba(21,101,192,0.4); border-radius:4px; padding:4px 10px; font-size:12px; color:var(--accent); font-weight:700; font-family:'Barlow',sans-serif;">${fmt(t)}</span>`;
+      html += `<span style="background:#2b2b2b; border:1px solid rgba(201,164,76,0.4); border-radius:4px; padding:4px 10px; font-size:12px; color:var(--accent); font-weight:700; font-family:'Barlow',sans-serif;">${fmt(t)}</span>`;
     }
     container.innerHTML = html;
   }
@@ -2377,6 +2641,72 @@ const firebaseConfig = {
     _origShowSection(sectionId);
     if (sectionId === 'walkInPriceSection') renderWalkInSlots();
   };
+
+  // Slots are shown by default now (one-page layout), so render once on load too.
+  document.addEventListener('DOMContentLoaded', renderWalkInSlots);
+
+  // ========== SAVED CUSTOMER INFO (name + phone remembered for next visit) ==========
+  // Once a client signs in with Google and books once, their name/phone are
+  // stored in customers/{uid} and auto-filled next time — no retyping.
+  function prefillCustomerInfo(user) {
+    if (!user) return;
+    db.collection('customers').doc(user.uid).get().then(doc => {
+      if (!doc.exists) return;
+      const data = doc.data();
+      const nameField = document.getElementById('name');
+      const phoneField = document.getElementById('phone');
+      const hcNameField = document.getElementById('hcName');
+      const hcPhoneField = document.getElementById('hcPhone');
+      if (nameField && !nameField.value && data.name) nameField.value = data.name;
+      if (phoneField && !phoneField.value && data.phone) phoneField.value = data.phone;
+      if (hcNameField && !hcNameField.value && data.name) hcNameField.value = data.name;
+      if (hcPhoneField && !hcPhoneField.value && data.phone) hcPhoneField.value = data.phone;
+    }).catch(() => {});
+  }
+
+  function saveCustomerInfo(user, name, phone) {
+    if (!user) return;
+    db.collection('customers').doc(user.uid).set({
+      name,
+      phone,
+      email: user.email || null,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true }).catch(() => {});
+  }
+
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) prefillCustomerInfo(user);
+  });
+
+  // ========== NEWSLETTER SIGNUP ==========
+  function subscribeNewsletter(event) {
+    event.preventDefault();
+    const nameField = document.getElementById('newsletterName');
+    const emailField = document.getElementById('newsletterEmail');
+    const msg = document.getElementById('newsletterMsg');
+    const name = nameField.value.trim();
+    const email = emailField.value.trim();
+
+    if (!name || !email) {
+      msg.style.color = '#e74c3c';
+      msg.textContent = 'Please fill in your name and email.';
+      return;
+    }
+
+    db.collection('subscribers').add({
+      name,
+      email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      msg.style.color = '#4caf50';
+      msg.textContent = "You're on the list! 🎉";
+      document.getElementById('newsletterForm').reset();
+    }).catch(err => {
+      msg.style.color = '#e74c3c';
+      msg.textContent = 'Something went wrong — please try again.';
+      console.error('Newsletter signup failed:', err);
+    });
+  }
 
   // ========== PHONE FORMAT ==========
   document.addEventListener("DOMContentLoaded", function () {
