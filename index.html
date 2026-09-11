@@ -1340,7 +1340,7 @@ async function loadGallery() {
   const filterDiv = document.getElementById('galleryFilter');
   grid.innerHTML = '<div class="gallery-empty">Loading photos…</div>';
   try {
-    const snap = await db.collection('gallery').orderBy('timestamp','desc').get();
+    const snap = await db.collection('gallery').orderBy('sortOrder','asc').get();
     if (snap.empty) { grid.innerHTML = '<div class="gallery-empty">No photos yet.</div>'; return; }
     const photos = snap.docs.map(d => ({id:d.id,...d.data()}));
     const cats = ['All', ...new Set(photos.map(p=>p.category).filter(Boolean))];
