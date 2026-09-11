@@ -1216,7 +1216,7 @@ async function submitBooking() {
 
   try {
     await db.collection('bookings').add({
-      uid: u.uid, bookingNumber: bkNum, name, phone, email,
+      uid: u.uid, bookingNumber: bkNum, name, phone, email, userEmail: email,
       date, time, service: svcStr, duration: dur, total,
       deposit:'No', status:'Active',
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
