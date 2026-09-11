@@ -383,7 +383,7 @@ footer{background:#070707;border-top:1px solid var(--border);padding:60px 8% 30p
 <body>
 
 <nav>
-  <a class="logo" href="#home">
+  <a class="logo" href="#home" onclick="showHomePage();">
     <img src="https://res.cloudinary.com/dqqr9udcs/image/upload/v1776877093/Apr_22_2026_11_52_41_AM.png_wqhnjl.jpg" alt="NEW U BARBER">
     <span class="logo-text">
       <span class="logo-main">NEW U BARBER</span>
@@ -391,11 +391,11 @@ footer{background:#070707;border-top:1px solid var(--border);padding:60px 8% 30p
     </span>
   </a>
   <ul id="navlist">
-    <li><a href="#home">Home</a></li>
-    <li><a href="#services-sec">Services</a></li>
+    <li><a href="#home" onclick="showHomePage();">Home</a></li>
+    <li><a href="#services-sec" onclick="showHomePage();">Services</a></li>
     <li><a href="#" onclick="showGalleryPage(); return false;">Gallery</a></li>
-    <li><a href="#hours-sec">Hours</a></li>
-    <li><a href="#faq-sec">FAQ</a></li>
+    <li><a href="#hours-sec" onclick="showHomePage();">Hours</a></li>
+    <li><a href="#faq-sec" onclick="showHomePage();">FAQ</a></li>
     <li id="navLogin"><button class="link" id="authBtn" onclick="openAuthModal()">Login</button></li>
     <li id="navProfile" style="display:none;position:relative;">
       <button class="profile-btn" onclick="toggleProfileMenu()">
@@ -427,7 +427,7 @@ footer{background:#070707;border-top:1px solid var(--border);padding:60px 8% 30p
     <p class="hero-sub">Kingston's premium barbershop — precision fades, clean lines, and next-level grooming. Book your seat in seconds.</p>
     <div class="hero-buttons">
       <a class="hero-cta" href="#services-sec" onclick="openBookingModal()">Book Appointment</a>
-      <a class="find-us-btn" href="https://maps.app.goo.gl/jxwXq6aN847d5AvWA" target="_blank" rel="noopener">
+      <a class="find-us-btn" href="https://maps.app.goo.gl/uE9kbRL8bq47hZnu9" target="_blank" rel="noopener">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         FIND US NOW
       </a>
@@ -502,23 +502,18 @@ footer{background:#070707;border-top:1px solid var(--border);padding:60px 8% 30p
   <h2 class="title reveal">What Clients Say</h2>
   <div class="reviews-grid">
     <div class="review-card reveal">
-      <div class="rc-top"><div class="rc-avatar" style="background:#1565C0;">J</div><div class="rc-name">Jason W.</div></div>
+      <div class="rc-top"><div class="rc-avatar" style="background:#1565C0;">L</div><div class="rc-name">Luke-Ben Brown</div></div>
       <div class="rc-stars">★★★★★</div>
-      <p class="rc-text">Best fade I've had in Kingston. The attention to detail is on another level — walked out feeling like a new man.</p>
+      <p class="rc-text">First Class Haircuts!</p>
     </div>
     <div class="review-card reveal">
-      <div class="rc-top"><div class="rc-avatar" style="background:#0d47a1;">M</div><div class="rc-name">Marcus T.</div></div>
+      <div class="rc-top"><div class="rc-avatar" style="background:#0d47a1;">E</div><div class="rc-name">Emre Ozan</div></div>
       <div class="rc-stars">★★★★★</div>
-      <p class="rc-text">Booked online in 30 seconds, showed up on time, got an incredible cut. No wait, no drama. This is how it should be.</p>
-    </div>
-    <div class="review-card reveal">
-      <div class="rc-top"><div class="rc-avatar" style="background:#1976D2;">K</div><div class="rc-name">Kyle P.</div></div>
-      <div class="rc-stars">★★★★★</div>
-      <p class="rc-text">Brought my son for his first proper fade. Super relaxed atmosphere, patient with kids, and the cut was 🔥.</p>
+      <p class="rc-text">For Jamaica, the great barbarian.</p>
     </div>
   </div>
   <div class="reveal" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:40px;">
-    <button class="btn ghost" onclick="openReviewModal()" style="display:inline-block;">LEAVE A REVIEW</button>
+    <a class="btn ghost" href="https://share.google/sajEDIrIxJ8SyZvMQ" target="_blank" rel="noopener" style="display:inline-block;">LEAVE A REVIEW</a>
   </div>
 </section>
 
@@ -891,12 +886,22 @@ function openProfileModal() {
   document.getElementById('profAvatar').src = u.photoURL || '';
   document.getElementById('profName').value = u.displayName || '';
   document.getElementById('profEmail').value = u.email || '';
+  document.getElementById('profPhone').value = '';
+  db.collection('users').doc(u.uid).get().then(doc => {
+    if (doc.exists && doc.data().phone) {
+      document.getElementById('profPhone').value = doc.data().phone;
+    }
+  }).catch(()=>{});
   openModal('profileModal');
 }
 function saveProfile() {
   const u = auth.currentUser;
   if (!u) return;
-  u.updateProfile({ displayName: document.getElementById('profName').value.trim() })
+  const phone = document.getElementById('profPhone').value.trim();
+  Promise.all([
+    u.updateProfile({ displayName: document.getElementById('profName').value.trim() }),
+    db.collection('users').doc(u.uid).set({ phone }, { merge:true })
+  ])
     .then(() => { closeModal('profileModal'); updateNavAuth(u); Swal.fire({ icon:'success', title:'Saved', background:'#0d0d0d', color:'white', confirmButtonColor:'var(--blue)' }); })
     .catch(e => Swal.fire({ icon:'error', text:e.message, background:'#0d0d0d', color:'white' }));
 }
@@ -977,6 +982,12 @@ function openBookingModal() {
   if (u) {
     document.getElementById('bkName').value = u.displayName || '';
     document.getElementById('bkEmail').value = u.email || '';
+    document.getElementById('bkPhone').value = '';
+    db.collection('users').doc(u.uid).get().then(doc => {
+      if (doc.exists && doc.data().phone) {
+        document.getElementById('bkPhone').value = doc.data().phone;
+      }
+    }).catch(()=>{});
   }
 }
 
@@ -993,11 +1004,14 @@ function buildServicePicker() {
 }
 
 function toggleSvc(id, el) {
-  if (selectedServices.has(id)) {
-    selectedServices.delete(id);
-    el.classList.remove('selected');
-    el.querySelector('.check').textContent = '☐';
-  } else {
+  const alreadySelected = selectedServices.has(id);
+  // single-select: clear any other selection first
+  document.querySelectorAll('#menuPicker .svc-row.selected').forEach(row => {
+    row.classList.remove('selected');
+    row.querySelector('.check').textContent = '☐';
+  });
+  selectedServices.clear();
+  if (!alreadySelected) {
     selectedServices.add(id);
     el.classList.add('selected');
     el.querySelector('.check').textContent = '✔';
@@ -1146,8 +1160,9 @@ async function loadTimeSlots() {
     });
 
     const booked = bkSnap.docs.map(d => {
-      const t = toMins(d.data().time);
-      return {start:t, end:t+SLOT_MINUTES};
+      const bd = d.data();
+      const t = toMins(bd.time);
+      return {start:t, end:t+Number(bd.duration||SLOT_MINUTES)};
     });
 
     const now = new Date();
@@ -1222,6 +1237,9 @@ async function submitBooking() {
       deposit:'No', status:'Active',
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
+
+    // save phone (and name) to profile so it auto-fills on future bookings
+    db.collection('users').doc(u.uid).set({ phone, name }, { merge:true }).catch(()=>{});
 
     // Telegram
     const [yr,mo,dy] = date.split('-');
